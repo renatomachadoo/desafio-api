@@ -29,7 +29,7 @@ class MoviesNotesController{
   }
 
   async index(request,response){
-    const { user_id } = request.params
+    const { user_id } = request.query
 
     const moviesNotes = await knex("movies_notes")
       .select([
@@ -60,6 +60,18 @@ class MoviesNotesController{
     await knex("movies_notes").where({ id }).delete()
 
     return response.json()
+  }
+
+  async show(request,response){
+    const { id } = request.params
+
+    const movieNote = await knex("movies_notes").where({ id }).first()
+    const tags = await knex("movies_tags").where({ note_id : id}).orderBy("name")
+
+    return response.json({
+      ...movieNote,
+      tags
+    })
   }
 }
 
