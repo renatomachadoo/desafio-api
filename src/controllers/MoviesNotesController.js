@@ -28,6 +28,32 @@ class MoviesNotesController{
     return response.status(201).json()
   }
 
+  async index(request,response){
+    const { user_id } = request.params
+
+    const moviesNotes = await knex("movies_notes")
+      .select([
+        "id",
+        "title",
+        "description",
+        "rating"
+      ])
+      .where({ user_id })
+
+    const userTags = await knex("movies_tags").where({ user_id })
+
+    const moviesNotesWithTags = moviesNotes.map(note => {
+      const noteTags = userTags.filter(tag => tag.note_id === note.id).map(tag => tag.name)
+
+      return {
+        ...note,
+        tags: noteTags
+      };
+    })
+
+    return response.json(moviesNotesWithTags)
+  }
+
   async delete(request, response){
     const { id } = request.params
 
