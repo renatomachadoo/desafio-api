@@ -1,5 +1,5 @@
 const fs = require("fs")
-const path = require("paht")
+const path = require("path")
 const uploadConfig = require("../configs/upload")
 
 class DiskStorage{
