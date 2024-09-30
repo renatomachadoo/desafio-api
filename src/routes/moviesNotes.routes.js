@@ -1,8 +1,10 @@
 const { Router } = require("express")
 
 const MoviesNotesController = require("../controllers/MoviesNotesController")
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 
 const moviesNotesRoutes = Router();
+moviesNotesRoutes.use(ensureAuthenticated)
 
 const moviesNotesController = new MoviesNotesController()
 
