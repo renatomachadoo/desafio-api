@@ -34,6 +34,7 @@ class MoviesNotesController{
 
   async index(request,response){
     const user_id = request.user.id
+    const { title } = request.query
 
     const moviesNotes = await knex("movies_notes")
       .select([
@@ -43,6 +44,7 @@ class MoviesNotesController{
         "rating"
       ])
       .where({ user_id })
+      .whereLike("title", `%${title}%`)
 
     const userTags = await knex("movies_tags").where({ user_id })
 
