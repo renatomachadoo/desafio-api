@@ -4,7 +4,11 @@ const AppError = require("../utils/AppError")
 
 class UsersController{
     async create(request, response){
-        const {name, email, password, avatar} = request.body
+        const {name, email, password} = request.body
+
+        if(!name || !email || !password){
+            throw new AppError("Os campos devem estar todos preenchidos.", 401)
+        }
 
         const checkUserExists = await knex("users").where({ email }).first()
 
